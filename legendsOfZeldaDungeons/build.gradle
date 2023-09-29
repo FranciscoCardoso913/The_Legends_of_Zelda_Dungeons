@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'info.solidsoft.pitest' version '1.9.0'
+    id("net.ltgt.errorprone") version "2.0.0"
+}
+
+group 'com.l08gr01.legendsOfZeldaDungeons'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClass.set("com.l08gr01.legendsOfZeldaDungeons.Game")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation 'org.mockito:mockito-core:4.10.0'
+    implementation group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.1.1'
+
+    errorprone("com.google.errorprone:error_prone_core:2.16")
+    errorproneJavac("com.google.errorprone:javac:9+181-r4173-1")
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+pitest {
+    junit5PluginVersion = '1.0.0'
+}
+
+tasks.withType(JavaCompile).configureEach{
+    options.errorprone.disableWarningsInGeneratedCode = true
+    options.errorprone.enabled = true
+}
+
